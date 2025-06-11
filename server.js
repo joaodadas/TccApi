@@ -3,6 +3,7 @@ const cors = require("cors");
 require('dotenv').config();
 const { connectDB } = require("./config/dbConfig");
 const indexRoute = require('./routes/indexRoutes');
+const setupSwagger = require('./config/swagger');
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,8 @@ const corsOptions = {
 app.use(cors(corsOptions)); 
 
 connectDB();
+
+setupSwagger(app);
 
 indexRoute(app);
 
