@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "npm run"
+    "dev": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,8 +13,7 @@
     "@azure/service-bus": "^7.9.5",
     "cors": "^2.8.5",
     "express": "^4.21.1",
-    "mongo": "^0.1.0",
-    "mongodb": "^6.9.0",
-    "mongoose": "^8.7.2"
+    "@prisma/client": "^5.14.0",
+    "dotenv": "^16.3.1"
   }
 }
