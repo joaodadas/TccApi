@@ -1,59 +1,53 @@
-const User = require("../models/userModel"); 
+const userService = require('../application/userService');
 
 const createUser = async (req, res) => {
   try {
-    const newUser = new User(req.body);
-    await newUser.save();
+    const newUser = await userService.createUser(req.body);
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao criar usuário", error });
+    res.status(500).json({ message: 'Erro ao criar usuário', error });
   }
 };
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await userService.getUserById(req.params.id);
     if (!user) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
+      return res.status(404).json({ message: 'Usuário não encontrado' });
     }
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao buscar usuário", error });
+    res.status(500).json({ message: 'Erro ao buscar usuário', error });
   }
 };
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await userService.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao buscar usuários", error });
+    res.status(500).json({ message: 'Erro ao buscar usuários', error });
   }
 };
 
 const updateUser = async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const updatedUser = await userService.updateUser(req.params.id, req.body);
     if (!updatedUser) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
+      return res.status(404).json({ message: 'Usuário não encontrado' });
     }
     res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao atualizar usuário", error });
+    res.status(500).json({ message: 'Erro ao atualizar usuário', error });
   }
 };
 
 const deleteUser = async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    if (!deletedUser) {
-      return res.status(404).json({ message: "Usuário não encontrado" });
-    }
+    await userService.deleteUser(req.params.id);
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: "Erro ao remover usuário", error });
+    res.status(500).json({ message: 'Erro ao remover usuário', error });
   }
 };
 

@@ -1,50 +1,28 @@
-class UserRepository {
-  constructor(userModel) {
-    this.userModel = userModel; // Dependency Injection
-  }
+const { prisma } = require('../config/dbConfig');
 
+const UserRepository = {
   async create(userData) {
-    try {
-      const user = new this.userModel(userData);
-      return await user.save();
-    } catch (error) {
-      throw new Error("Error creating user: " + error.message);
-    }
-  }
+    return prisma.user.create({ data: userData });
+  },
 
   async getById(id) {
-    try {
-      return await this.userModel.findById(id);
-    } catch (error) {
-      throw new Error("Error fetching user by ID: " + error.message);
-    }
-  }
+    return prisma.user.findUnique({ where: { id: Number(id) } });
+  },
 
   async getAll() {
-    try {
-      return await this.userModel.find();
-    } catch (error) {
-      throw new Error("Error fetching users: " + error.message);
-    }
-  }
+    return prisma.user.findMany();
+  },
 
   async update(id, updateData) {
-    try {
-      return await this.userModel.findByIdAndUpdate(id, updateData, {
-        new: true,
-      });
-    } catch (error) {
-      throw new Error("Error updating user: " + error.message);
-    }
-  }
+    return prisma.user.update({
+      where: { id: Number(id) },
+      data: updateData,
+    });
+  },
 
   async delete(id) {
-    try {
-      return await this.userModel.findByIdAndDelete(id);
-    } catch (error) {
-      throw new Error("Error deleting user: " + error.message);
-    }
-  }
-}
+    return prisma.user.delete({ where: { id: Number(id) } });
+  },
+};
 
-module.exports = (userModel) => new UserRepository(userModel);
+module.exports = UserRepository;
